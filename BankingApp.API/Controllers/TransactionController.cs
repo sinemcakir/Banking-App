@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankingApp.API.Controllers
 {
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("api/[controller]")] //Yorum
 	public class TransactionController : ControllerBase
 	{
 		private readonly ITransactionService _transactionService;
