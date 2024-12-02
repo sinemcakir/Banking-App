@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankingApp.Domain.Model;
 
 namespace BankingApp.Infrastructure.Repositories
 {
@@ -24,31 +25,40 @@ namespace BankingApp.Infrastructure.Repositories
 			return transaction;
 		}
 
-		public async Task<IEnumerable<Transaction>> GetAccountTransactionsAsync(string accountNumber)
+		public async Task<IEnumerable<Domain.Model.Transaction>> GetAccountTransactionsAsync(string accountNumber)
 		{
 			var account = await _context.BankAccounts
 				.FirstOrDefaultAsync(b => b.AccountNumber == accountNumber);
 
-			return await _context.Transactions
-				.Where(t => t.BankAccountId == account.Id)
-				.OrderByDescending(t => t.TransactionDate)
-				.ToListAsync();
+			List<Domain.Model.Transaction> transactions = await _context.Transactions
+							.Where(t => t.BankAccountId == account.Id)
+							.OrderByDescending(t => t.TransactionDate)
+							.ToListAsync();
+			return transactions;
 		}
 
+
 		public async Task<IEnumerable<Transaction>> GetTransactionsByDateRangeAsync(
-			string accountNumber,
-			DateTime startDate,
-			DateTime endDate)
+	string accountNumber,
+	DateTime startDate,
+	DateTime endDate)
 		{
 			var account = await _context.BankAccounts
 				.FirstOrDefaultAsync(b => b.AccountNumber == accountNumber);
 
-			return await _context.Transactions
+			if (account == null)
+			{
+				return Enumerable.Empty<Transaction>(); // Null ise boş bir koleksiyon döner
+			}
+
+			return (IEnumerable<Transaction>)await _context.Transactions
 				.Where(t => t.BankAccountId == account.Id &&
 							t.TransactionDate >= startDate &&
 							t.TransactionDate <= endDate)
 				.OrderByDescending(t => t.TransactionDate)
 				.ToListAsync();
 		}
+
+
 	}
 }

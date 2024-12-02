@@ -20,4 +20,4 @@ namespace BankingApp.Domain.Model
 		public ICollection<Transaction> Transactions { get; set; }
 	}
 }
-}
+

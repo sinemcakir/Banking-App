@@ -3,6 +3,7 @@ using BankingApp.Application.Exceptions;
 using BankingApp.Application.Interfaces;
 using BankingApp.Domain.Model;
 using BankingApp.Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
